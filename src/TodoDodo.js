@@ -8,6 +8,11 @@ import ActionDelete from 'material-ui/svg-icons/action/delete';
 import SocialMood from 'material-ui/svg-icons/social/mood';
 import SocialMoodBad from 'material-ui/svg-icons/social/mood-bad';
 
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
+import Paper from 'material-ui/Paper';
+import {Card, CardHeader, CardText} from 'material-ui/Card';
+
 
 const Task = (props) => (
     <ListItem
@@ -18,6 +23,7 @@ const Task = (props) => (
                 {textDecoration: 'line-through', color: '#999'}
         }
         primaryText={props.taskName}
+        //secondaryText={props.taskDate}
         rightIcon={<ActionDelete onClick={() => props.deleteTask(props.taskId)}/>}
         leftIcon={
             props.taskDone === false ?
@@ -32,6 +38,9 @@ class TodoDodo extends React.Component {
     state = {
         tasks: null,
         textFromInput: '',
+
+        taskName:'',
+        tasksSelect:0,
     }
 
     componentWillMount() {
@@ -79,11 +88,17 @@ class TodoDodo extends React.Component {
         this.setState({textFromInput: ''})
     }
 
+    handleTaskName = (event, value) => {
+        this.setState({taskName: value});
+    };
+
+    handleTasksSelect = (event, index, value) => this.setState({tasksSelect: value})
+
     render() {
         return (
             <div>
                 <TextField
-                    hintText={"Do something nice..."}
+                    hintText={"Do some stuff..."}
                     fullWidth={true}
                     value={this.state.textFromInput}
                     onChange={(e, value) => this.setState({textFromInput: value})} // onChange={this.handleTextFromInput}
@@ -99,7 +114,18 @@ class TodoDodo extends React.Component {
                     {
                         this.state.tasks // uniknij null za pierwszym zaladowaniem, zanim dane przyjda z bazy
                         &&
-                        this.state.tasks.map((el) => (
+                        this.state.tasks
+                            .filter((el) => el.name.indexOf(this.state.taskName) !== -1)
+                            .filter((el) => (
+                                this.state.tasksSelect === 0 ?
+                                    true
+                                    :
+                                    this.state.tasksSelect === 1 ?
+                                        el.done===false
+                                        :
+                                        el.done===true
+                            ))
+                            .map((el) => (
                             <Task
                                 taskId={el.key} // mapped to obj
                                 taskName={el.name}
@@ -112,6 +138,30 @@ class TodoDodo extends React.Component {
                         ))
                     }
                 </List>
+
+                <Card>
+                    <CardHeader
+                        title="Filter your Todos"
+                        actAsExpander={true}
+                        showExpandableButton={true}
+                    />
+                    <CardText expandable={true} style={{textAlign: 'left'}}>
+                        <TextField
+                            floatingLabelText="Find your Todo ..."
+                            fullWidth={true}
+                            onChange={this.handleTaskName}
+                        />
+                        <SelectField
+                            floatingLabelText="Todos status"
+                            value={this.state.tasksSelect}
+                            onChange={this.handleTasksSelect}
+                        >
+                            <MenuItem value={0} primaryText="All Todos" style={{color: "#BDBDBD"}}/>
+                            <MenuItem value={1} primaryText="Undone Todos"/>
+                            <MenuItem value={2} primaryText="Done Todos"/>
+                        </SelectField>
+                    </CardText>
+                </Card>
             </div>
         )
     }
