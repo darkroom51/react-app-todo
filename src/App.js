@@ -16,6 +16,8 @@ class App extends Component {
             <MuiThemeProvider>
                 <div>
                     <AppBar
+                        style={{textAlign: 'center'}}
+                        showMenuIconButton={false}
                         title="Todo Dodo React"
                     />
                     <Paper style={paperStyles}>
