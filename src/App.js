@@ -18,10 +18,10 @@ class App extends Component {
                     <AppBar
                         title="Todo Dodo React"
                     />
+                    <Paper style={paperStyles}>
+                        <TodoDodo/>
+                    </Paper>
                 </div>
-                <Paper style={paperStyles}>
-                    <TodoDodo/>
-                </Paper>
             </MuiThemeProvider>
         );
     }

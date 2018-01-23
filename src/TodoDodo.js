@@ -1,19 +1,23 @@
 import React from 'react'
 import {database} from './firebase'
-
 import TextField from 'material-ui/TextField'
 import RaisedButton from 'material-ui/RaisedButton'
 import {List, ListItem} from 'material-ui/List';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
 import SocialMood from 'material-ui/svg-icons/social/mood';
 import SocialMoodBad from 'material-ui/svg-icons/social/mood-bad';
-
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
-//import Paper from 'material-ui/Paper';
 import {Card, CardHeader, CardText} from 'material-ui/Card';
 import Toggle from 'material-ui/Toggle';
 
+
+const dateToStr = (dateObj) => {
+    let dateStr = dateObj.getFullYear() + '-' + (dateObj.getMonth() + 1) + '-' + dateObj.getDate();
+    let timeStr = dateObj.getHours() + ':' + dateObj.getMinutes() + ':' + dateObj.getSeconds();
+    let dateTimeStr = dateStr + ' ' + timeStr;
+    return dateTimeStr
+}
 
 const Task = (props) => (
     <ListItem
@@ -39,7 +43,6 @@ class TodoDodo extends React.Component {
     state = {
         tasks: null,
         textFromInput: '',
-
         taskName:'',
         tasksSelect:0,
         dateToggle:false,
@@ -84,7 +87,7 @@ class TodoDodo extends React.Component {
                 {
                     name: this.state.textFromInput,
                     done: false,
-                    dateAdd: Date.now()
+                    dateAdd: dateToStr(new Date())
                 }
             )
         this.setState({textFromInput: ''})
