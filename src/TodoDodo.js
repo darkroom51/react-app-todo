@@ -10,8 +10,9 @@ import SocialMoodBad from 'material-ui/svg-icons/social/mood-bad';
 
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
-import Paper from 'material-ui/Paper';
+//import Paper from 'material-ui/Paper';
 import {Card, CardHeader, CardText} from 'material-ui/Card';
+import Toggle from 'material-ui/Toggle';
 
 
 const Task = (props) => (
@@ -23,7 +24,7 @@ const Task = (props) => (
                 {textDecoration: 'line-through', color: '#999'}
         }
         primaryText={props.taskName}
-        //secondaryText={props.taskDate}
+        secondaryText={props.dateToggle ? props.taskDate : null}
         rightIcon={<ActionDelete onClick={() => props.deleteTask(props.taskId)}/>}
         leftIcon={
             props.taskDone === false ?
@@ -41,6 +42,7 @@ class TodoDodo extends React.Component {
 
         taskName:'',
         tasksSelect:0,
+        dateToggle:false,
     }
 
     componentWillMount() {
@@ -94,6 +96,8 @@ class TodoDodo extends React.Component {
 
     handleTasksSelect = (event, index, value) => this.setState({tasksSelect: value})
 
+    handleDateToggle = (event, toggle) => this.setState({dateToggle: toggle})
+
     render() {
         return (
             <div>
@@ -133,6 +137,7 @@ class TodoDodo extends React.Component {
                                 taskDate={el.dateAdd}
                                 deleteTask={this.deleteTask}
                                 toggleDoneTask={this.toggleDoneTask}
+                                dateToggle={this.state.dateToggle}
                                 key={el.key}
                             />
                         ))
@@ -155,11 +160,20 @@ class TodoDodo extends React.Component {
                             floatingLabelText="Todos status"
                             value={this.state.tasksSelect}
                             onChange={this.handleTasksSelect}
+                            style={{display:'inline-block'}}
                         >
                             <MenuItem value={0} primaryText="All Todos" style={{color: "#BDBDBD"}}/>
                             <MenuItem value={1} primaryText="Undone Todos"/>
                             <MenuItem value={2} primaryText="Done Todos"/>
                         </SelectField>
+
+                        <div style={{maxWidth:250, paddingTop:20}}>
+                        <Toggle
+                            label="Show dates"
+                            style={{display:'inline-block'}}
+                            onToggle={this.handleDateToggle}
+                        />
+                        </div>
                     </CardText>
                 </Card>
             </div>
