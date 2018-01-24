@@ -15,7 +15,7 @@ Launch development server :
 ```
 $ npm start
 ```
-##Demo
+## Demo
 You can view working demo here:
 
 https://wld-react-app-todo.firebaseapp.com/
